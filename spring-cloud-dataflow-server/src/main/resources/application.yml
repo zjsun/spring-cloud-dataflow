@@ -41,3 +41,9 @@ info:
 #  client:
 #    serviceUrl:
 #      defaultZone: http://localhost:8761/eureka/
+spring:
+  security:
+    user:
+      name: admin
+      password: EDP#Wz4UVHTK
+      roles: [VIEW, MANAGE, DESTROY, CREATE, MODIFY, DEPLOY, SCHEDULE]
