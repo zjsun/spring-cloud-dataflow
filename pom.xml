@@ -90,6 +90,12 @@
 		<wavefront-spring-boot-bom.version>2.2.0</wavefront-spring-boot-bom.version>
 		<spring-cloud-dataflow-apps-docs-plugin.version>1.0.4</spring-cloud-dataflow-apps-docs-plugin.version>
 		<spring-cloud-dataflow-apps-metadata-plugin.version>1.0.4</spring-cloud-dataflow-apps-metadata-plugin.version>
+
+		<!-- datav -->
+		<skipTests>true</skipTests>
+		<maven.javadoc.skip>true</maven.javadoc.skip>
+		<checkstyle.skip>true</checkstyle.skip>
+		<docker.prefix>docker.datav.com/datav</docker.prefix>
 	</properties>
 	<modules>
 		<module>spring-cloud-dataflow-container-registry</module>
@@ -364,6 +370,51 @@
 					<groupId>org.springframework.cloud</groupId>
 					<artifactId>spring-cloud-dataflow-apps-metadata-plugin</artifactId>
 					<version>${spring-cloud-dataflow-apps-metadata-plugin.version}</version>
+				</plugin>
+				<!-- datav -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>clean-docker-image</id>
+							<phase />
+							<goals>
+								<goal>exec</goal>
+							</goals>
+							<configuration>
+								<executable>docker</executable>
+								<commandlineArgs>rmi ${docker.prefix}/${project.artifactId}:${project.version}</commandlineArgs>
+								<workingDirectory>${project.basedir}</workingDirectory>
+								<successCodes>0,1</successCodes>
+							</configuration>
+						</execution>
+						<execution>
+							<id>build-docker-image</id>
+							<phase />
+							<goals>
+								<goal>exec</goal>
+							</goals>
+							<configuration>
+								<executable>docker</executable>
+								<commandlineArgs>build --build-arg JAR_FILE=target/${project.artifactId}-${project.version}.jar -t ${docker.prefix}/${project.artifactId}:${project.version} .
+								</commandlineArgs>
+								<workingDirectory>${project.basedir}</workingDirectory>
+							</configuration>
+						</execution>
+						<execution>
+							<id>deploy-docker-image</id>
+							<phase />
+							<goals>
+								<goal>exec</goal>
+							</goals>
+							<configuration>
+								<executable>docker</executable>
+								<commandlineArgs>push ${docker.prefix}/${project.artifactId}:${project.version}</commandlineArgs>
+								<workingDirectory>${project.basedir}</workingDirectory>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>
