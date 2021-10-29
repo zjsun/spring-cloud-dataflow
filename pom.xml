@@ -324,6 +324,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
+				<configuration>
+					<skip>${checkstyle.skip}</skip>
+					<skipExec>${checkstyle.skip}</skipExec>
+				</configuration>
 			</plugin>
 		</plugins>
 		<pluginManagement>
