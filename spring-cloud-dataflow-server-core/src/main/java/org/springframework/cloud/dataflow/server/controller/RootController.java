@@ -83,7 +83,7 @@ public class RootController {
 	 *
 	 * @return {@code RepresentationModel} object containing the Data Flow server's resources
 	 */
-	@RequestMapping("/")
+//	@RequestMapping("/")
 	public RootResource info() {
 		RootResource root = new RootResource(Version.REVISION);
 
