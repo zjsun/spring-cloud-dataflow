@@ -44,8 +44,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.Assert;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -60,6 +59,7 @@ import static org.mockito.Mockito.verify;
 @TestPropertySource(properties = {"graph=ComposedTest-AAA && ComposedTest-BBB && ComposedTest-CCC","max-wait-time=1010",
 		"composed-task-properties=" + ComposedTaskRunnerConfigurationWithPropertiesTests.COMPOSED_TASK_PROPS ,
 		"interval-time-between-checks=1100", "composed-task-arguments=--baz=boo --AAA.foo=bar BBB.que=qui",
+		"transaction-isolation-level=ISOLATION_READ_COMMITTED",
 		"dataflow-server-uri=https://bar", "spring.cloud.task.name=ComposedTest"})
 @EnableAutoConfiguration(exclude = { CommonSecurityAutoConfiguration.class})
 public class ComposedTaskRunnerConfigurationWithPropertiesTests {
@@ -83,7 +83,7 @@ public class ComposedTaskRunnerConfigurationWithPropertiesTests {
 	@Test
 	@DirtiesContext
 	public void testComposedConfiguration() throws Exception {
-		assertFalse(composedTaskProperties.isSkipTlsCertificateVerification());
+		assertThat(composedTaskProperties.isSkipTlsCertificateVerification()).isFalse();
 
 		JobExecution jobExecution = this.jobRepository.createJobExecution(
 				"ComposedTest", new JobParameters());
@@ -96,10 +96,12 @@ public class ComposedTaskRunnerConfigurationWithPropertiesTests {
 		Map<String, String> props = new HashMap<>(1);
 		props.put("format", "yyyy");
 		props.put("memory", "2048m");
-		assertEquals(COMPOSED_TASK_PROPS, composedTaskProperties.getComposedTaskProperties());
-		assertEquals(1010, composedTaskProperties.getMaxWaitTime());
-		assertEquals(1100, composedTaskProperties.getIntervalTimeBetweenChecks());
-		assertEquals("https://bar", composedTaskProperties.getDataflowServerUri().toASCIIString());
+		assertThat(composedTaskProperties.getComposedTaskProperties()).isEqualTo(COMPOSED_TASK_PROPS);
+		assertThat(composedTaskProperties.getMaxWaitTime()).isEqualTo(1010);
+		assertThat(composedTaskProperties.getIntervalTimeBetweenChecks()).isEqualTo(1100);
+		assertThat(composedTaskProperties.getDataflowServerUri().toASCIIString()).isEqualTo("https://bar");
+		assertThat(composedTaskProperties.getTransactionIsolationLevel()).isEqualTo("ISOLATION_READ_COMMITTED");
+
 		List<String> args = new ArrayList<>(1);
 		args.add("--baz=boo --foo=bar");
 		Assert.notNull(job.getJobParametersIncrementer(), "JobParametersIncrementer must not be null.");
