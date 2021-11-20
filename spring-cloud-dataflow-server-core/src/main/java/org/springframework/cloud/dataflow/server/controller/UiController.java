@@ -47,11 +47,7 @@ public class UiController {
         return WEB_UI_INDEX_PAGE_ROUTE + path;
     }
 
-//	@RequestMapping
-//	public String index() {
-//		return "redirect:" + WEB_UI_INDEX_PAGE_ROUTE + "/index.html";
-//	}
-
+    // datav fix
     @RequestMapping(value = {"", "/", "/zh"})
     public void index(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher(dashboard("/zh/index.html")).forward(request, response);
