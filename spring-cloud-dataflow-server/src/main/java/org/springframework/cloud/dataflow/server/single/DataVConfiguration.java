@@ -108,7 +108,7 @@ public class DataVConfiguration extends WebSecurityConfigurerAdapter {
         while (true) {
             Page<TaskDefinition> taskPage = taskDefinitionRepository.findAll(taskRequest);
             taskPage.forEach(taskDefinition -> {
-                Set<Long> toCleanIds = taskExecutionService.getAllTaskExecutionIds(true, taskDefinition.getTaskName())
+                Set<Long> toCleanIds = taskExecutionService.getAllTaskExecutionIds(false, taskDefinition.getTaskName())
                         .stream().sorted(Collections.reverseOrder()).skip(taskExecutionRetentionCount).collect(Collectors.toSet());
                 if (!toCleanIds.isEmpty()) {
                     logger.info("清理任务[" + taskDefinition.getTaskName() + "]，执行记录：" + toCleanIds);
