@@ -4,9 +4,9 @@ MAINTAINER datav.com
 USER root
 ENV TZ=Asia/Shanghai
 RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN echo "LC_ALL=en_US.UTF-8" >> /etc/environment
-RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
-RUN echo "LANG=en_US.UTF-8" > /etc/locale.conf
+ENV LANG     C.UTF-8
+ENV LANGUAGE C.UTF-8
+ENV LC_ALL   C.UTF-8
 
 USER 1001
 
