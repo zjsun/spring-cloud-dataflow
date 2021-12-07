@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -103,7 +104,7 @@ public class DataVConfiguration extends WebSecurityConfigurerAdapter {
         long start = System.currentTimeMillis();
         AtomicInteger cleanedTaskCount = new AtomicInteger(0);
         AtomicInteger cleanedExecutionCount = new AtomicInteger(0);
-        Pageable taskRequest = PageRequest.ofSize(50);
+        Pageable taskRequest = PageRequest.ofSize(50).withSort(Sort.Direction.ASC, "taskName");
         while (true) {
             Page<TaskDefinition> taskPage = taskDefinitionRepository.findAll(taskRequest);
             taskPage.forEach(taskDefinition -> {
