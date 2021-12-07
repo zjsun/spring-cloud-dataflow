@@ -41,7 +41,7 @@ public class SpringSecurityAuditorAware implements AuditorAware<String> {
 		final boolean authenticationEnabled = securityStateBean.isAuthenticationEnabled();
 		if (authenticationEnabled && SecurityContextHolder.getContext() != null) {
 			final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
 				return Optional.of(authentication.getName());
 			}
 		}
