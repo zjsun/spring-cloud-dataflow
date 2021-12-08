@@ -1,4 +1,4 @@
-FROM bitnami/spring-cloud-dataflow:2.9.1
+FROM bitnami/spring-cloud-dataflow-composed-task-runner:2.9.1
 MAINTAINER datav.com
 
 USER root
@@ -11,4 +11,4 @@ ENV LC_ALL   C.UTF-8
 USER 1001
 
 ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} /opt/bitnami/spring-cloud-dataflow/spring-cloud-dataflow.jar
+COPY ${JAR_FILE} /opt/bitnami/spring-cloud-dataflow-composed-task-runner/scdf-composed-task-runner.jar

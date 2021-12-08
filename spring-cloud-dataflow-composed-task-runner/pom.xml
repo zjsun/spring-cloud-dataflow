@@ -117,4 +117,33 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>docker</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>clean-docker-image</id>
+								<phase>clean</phase>
+							</execution>
+							<execution>
+								<id>build-docker-image</id>
+								<phase>package</phase>
+							</execution>
+							<execution>
+								<id>deploy-docker-image</id>
+								<phase>deploy</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+	</profiles>
 </project>
