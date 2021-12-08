@@ -78,6 +78,8 @@ public class DefaultSchedulerService implements SchedulerService {
 	private AppRegistryService registry;
 	private final TaskConfigurationProperties taskConfigurationProperties;
 	private final String dataflowServerUri;
+	private final String dataflowServerUsername;
+	private final String dataflowServerPassword;
 	private final VisibleProperties visibleProperties;
 	private final SchedulerServiceProperties schedulerServiceProperties;
 	private final AuditRecordService auditRecordService;
@@ -104,20 +106,20 @@ public class DefaultSchedulerService implements SchedulerService {
 	 * @param schedulerServiceProperties the {@link SchedulerServiceProperties} for this service.
 	 * @param auditRecordService the {@link AuditRecordService} for this service.
 	 */
-	@Deprecated
-	public DefaultSchedulerService(CommonApplicationProperties commonApplicationProperties,
-								   List<TaskPlatform> taskPlatforms, TaskDefinitionRepository taskDefinitionRepository,
-								   AppRegistryService registry, ResourceLoader resourceLoader,
-								   TaskConfigurationProperties taskConfigurationProperties,
-								   DataSourceProperties dataSourceProperties, String dataflowServerUri,
-								   ApplicationConfigurationMetadataResolver metaDataResolver,
-								   SchedulerServiceProperties schedulerServiceProperties,
-								   AuditRecordService auditRecordService) {
-
-		this(commonApplicationProperties, taskPlatforms, taskDefinitionRepository, registry, resourceLoader,
-				taskConfigurationProperties, dataSourceProperties, dataflowServerUri, metaDataResolver,
-				schedulerServiceProperties, auditRecordService, null);
-	}
+//	@Deprecated
+//	public DefaultSchedulerService(CommonApplicationProperties commonApplicationProperties,
+//								   List<TaskPlatform> taskPlatforms, TaskDefinitionRepository taskDefinitionRepository,
+//								   AppRegistryService registry, ResourceLoader resourceLoader,
+//								   TaskConfigurationProperties taskConfigurationProperties,
+//								   DataSourceProperties dataSourceProperties, String dataflowServerUri,
+//								   ApplicationConfigurationMetadataResolver metaDataResolver,
+//								   SchedulerServiceProperties schedulerServiceProperties,
+//								   AuditRecordService auditRecordService) {
+//
+//		this(commonApplicationProperties, taskPlatforms, taskDefinitionRepository, registry, resourceLoader,
+//				taskConfigurationProperties, dataSourceProperties, dataflowServerUri, metaDataResolver,
+//				schedulerServiceProperties, auditRecordService, null);
+//	}
 
 	/**
 	 * Constructor for DefaultSchedulerService
@@ -129,21 +131,22 @@ public class DefaultSchedulerService implements SchedulerService {
 	 * @param taskConfigurationProperties the {@link TaskConfigurationProperties} for this service.
 	 * @param dataSourceProperties the {@link DataSourceProperties} for this service.
 	 * @param dataflowServerUri the Spring Cloud Data Flow uri for this service.
+	 * @param dataflowServerUsername
+	 * @param dataflowServerPassword
 	 * @param metaDataResolver the {@link ApplicationConfigurationMetadataResolver} for this service.
 	 * @param schedulerServiceProperties the {@link SchedulerServiceProperties} for this service.
 	 * @param auditRecordService the {@link AuditRecordService} for this service.
 	 * @param composedTaskRunnerConfigurationProperties the {@link ComposedTaskRunnerConfigurationProperties} for this
-	 *                                                  service
 	 */
 	public DefaultSchedulerService(CommonApplicationProperties commonApplicationProperties,
-			List<TaskPlatform> taskPlatforms, TaskDefinitionRepository taskDefinitionRepository,
-			AppRegistryService registry, ResourceLoader resourceLoader,
-			TaskConfigurationProperties taskConfigurationProperties,
-			DataSourceProperties dataSourceProperties, String dataflowServerUri,
-			ApplicationConfigurationMetadataResolver metaDataResolver,
-			SchedulerServiceProperties schedulerServiceProperties,
-			AuditRecordService auditRecordService,
-			ComposedTaskRunnerConfigurationProperties composedTaskRunnerConfigurationProperties) {
+								   List<TaskPlatform> taskPlatforms, TaskDefinitionRepository taskDefinitionRepository,
+								   AppRegistryService registry, ResourceLoader resourceLoader,
+								   TaskConfigurationProperties taskConfigurationProperties,
+								   DataSourceProperties dataSourceProperties, String dataflowServerUri,
+								   String dataflowServerUsername, String dataflowServerPassword, ApplicationConfigurationMetadataResolver metaDataResolver,
+								   SchedulerServiceProperties schedulerServiceProperties,
+								   AuditRecordService auditRecordService,
+								   ComposedTaskRunnerConfigurationProperties composedTaskRunnerConfigurationProperties) {
 
 		Assert.notNull(commonApplicationProperties, "commonApplicationProperties must not be null");
 		Assert.notNull(taskPlatforms, "taskPlatforms must not be null");
@@ -161,6 +164,8 @@ public class DefaultSchedulerService implements SchedulerService {
 		this.registry = registry;
 		this.taskConfigurationProperties = taskConfigurationProperties;
 		this.dataflowServerUri = dataflowServerUri;
+		this.dataflowServerUsername = dataflowServerUsername;
+		this.dataflowServerPassword = dataflowServerPassword;
 		this.visibleProperties = new VisibleProperties(metaDataResolver);
 		this.schedulerServiceProperties = schedulerServiceProperties;
 		this.auditRecordService = auditRecordService;
@@ -235,8 +240,9 @@ public class DefaultSchedulerService implements SchedulerService {
 
 		Map<String, String> deployerDeploymentProperties = DeploymentPropertiesUtils
 				.extractAndQualifyDeployerProperties(taskDeploymentProperties, taskDefinition.getRegisteredAppName());
-		if (StringUtils.hasText(this.dataflowServerUri) && taskNode.isComposed()) {
-			TaskServiceUtils.updateDataFlowUriIfNeeded(this.dataflowServerUri, appDeploymentProperties, commandLineArgs);
+		if (taskNode.isComposed()) {
+			TaskServiceUtils.updateDataFlowIfNeeded(appDeploymentProperties, commandLineArgs,
+					this.dataflowServerUri, this.dataflowServerUsername, this.dataflowServerPassword);
 		}
 		AppDefinition revisedDefinition = TaskServiceUtils.mergeAndExpandAppProperties(taskDefinition, metadataResource,
 				appDeploymentProperties, visibleProperties);

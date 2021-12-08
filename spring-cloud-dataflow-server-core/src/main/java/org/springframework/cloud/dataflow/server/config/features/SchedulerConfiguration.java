@@ -61,6 +61,10 @@ public class SchedulerConfiguration {
 
 	@Value("${spring.cloud.dataflow.server.uri:}")
 	private String dataflowServerUri;
+	@Value("${spring.cloud.dataflow.server.username:}")
+	private String dataflowServerUsername;
+	@Value("${spring.cloud.dataflow.server.password:}")
+	private String dataflowServerPassword;
 
 	@Bean
 	@ConditionalOnMissingBean
@@ -76,7 +80,7 @@ public class SchedulerConfiguration {
 		return new DefaultSchedulerService(commonApplicationProperties,
 				taskPlatforms, taskDefinitionRepository, registry, resourceLoader,
 				taskConfigurationProperties, dataSourceProperties,
-				this.dataflowServerUri, metaDataResolver, schedulerServiceProperties, auditRecordService,
+				this.dataflowServerUri, null, null, metaDataResolver, schedulerServiceProperties, auditRecordService,
 				composedTaskRunnerConfigurationProperties);
 	}
 

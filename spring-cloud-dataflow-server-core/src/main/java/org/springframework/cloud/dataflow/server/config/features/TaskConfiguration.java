@@ -98,6 +98,10 @@ public class TaskConfiguration {
 
 	@Value("${spring.cloud.dataflow.server.uri:}")
 	private String dataflowServerUri;
+	@Value("${spring.cloud.dataflow.server.username:}")
+	private String dataflowServerUsername;
+	@Value("${spring.cloud.dataflow.server.password:}")
+	private String dataflowServerPassword;
 
 	@Autowired
 	private TaskConfigurationProperties taskConfigurationProperties;
@@ -184,7 +188,7 @@ public class TaskConfiguration {
 			CommonApplicationProperties commonApplicationProperties,
 			ApplicationConfigurationMetadataResolver metadataResolver) {
 		return new TaskAppDeploymentRequestCreator(commonApplicationProperties,
-				metadataResolver, dataflowServerUri);
+				metadataResolver, dataflowServerUri, dataflowServerUsername, dataflowServerPassword);
 	}
 
 	@Bean

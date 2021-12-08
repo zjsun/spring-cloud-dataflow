@@ -202,7 +202,7 @@ public class DefaultSchedulerServiceMultiplatformTests {
 				taskPlatform, this.taskDefinitionRepository,
 				this.appRegistry, this.resourceLoader,
 				this.taskConfigurationProperties, mock(DataSourceProperties.class), null,
-				this.metaDataResolver, this.schedulerServiceProperties, this.auditRecordService,
+                null, null, this.metaDataResolver, this.schedulerServiceProperties, this.auditRecordService,
 				this.composedTaskRunnerConfigurationProperties);
 	}
 
@@ -392,7 +392,7 @@ public class DefaultSchedulerServiceMultiplatformTests {
 		SchedulerService mockSchedulerService = new DefaultSchedulerService(mock(CommonApplicationProperties.class),
 				taskPlatform, mockTaskDefinitionRepository, mockAppRegistryService, mock(ResourceLoader.class),
 				this.taskConfigurationProperties, mock(DataSourceProperties.class), "uri",
-				mock(ApplicationConfigurationMetadataResolver.class), mock(SchedulerServiceProperties.class),
+                null, null, mock(ApplicationConfigurationMetadataResolver.class), mock(SchedulerServiceProperties.class),
 				mock(AuditRecordService.class), this.composedTaskRunnerConfigurationProperties);
 
 		TaskDefinition taskDefinition = new TaskDefinition(BASE_DEFINITION_NAME, "timestamp");

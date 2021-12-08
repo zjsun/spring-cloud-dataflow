@@ -316,7 +316,7 @@ public class TaskServiceDependencies extends WebMvcConfigurationSupport {
 			CommonApplicationProperties commonApplicationProperties,
 			ApplicationConfigurationMetadataResolver metadataResolver) {
 		return new TaskAppDeploymentRequestCreator(commonApplicationProperties,
-				metadataResolver, null);
+				metadataResolver, null, null, null);
 	}
 
 	@Bean
@@ -372,7 +372,7 @@ public class TaskServiceDependencies extends WebMvcConfigurationSupport {
 				taskPlatforms, taskDefinitionRepository,
 				registry, resourceLoader,
 				taskConfigurationProperties, dataSourceProperties, null,
-				metaDataResolver, schedulerServiceProperties, auditRecordService,
+				null, null, metaDataResolver, schedulerServiceProperties, auditRecordService,
 				composedTaskRunnerConfigurationProperties);
 	}
 

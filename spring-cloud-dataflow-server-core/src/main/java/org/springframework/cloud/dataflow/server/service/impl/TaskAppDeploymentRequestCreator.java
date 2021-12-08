@@ -58,23 +58,28 @@ public class TaskAppDeploymentRequestCreator {
 	private final VisibleProperties visibleProperties;
 
 	private final String dataflowServerUri;
+	private final String dataflowServerUsername;
+	private final String dataflowServerPassword;
 
 	/**
 	 * Initializes the {@link TaskAppDeploymentRequestCreator}.
-	 *
-	 * @param commonApplicationProperties the common application properties for all tasks
+	 *  @param commonApplicationProperties the common application properties for all tasks
 	 * @param metaDataResolver the metadata resolver
 	 * @param dataflowServerUri the URI of the data flow server
+	 * @param dataflowServerUsername
+	 * @param dataflowServerPassword
 	 */
 	public TaskAppDeploymentRequestCreator(CommonApplicationProperties commonApplicationProperties,
-			ApplicationConfigurationMetadataResolver metaDataResolver,
-			String dataflowServerUri) {
+										   ApplicationConfigurationMetadataResolver metaDataResolver,
+										   String dataflowServerUri, String dataflowServerUsername, String dataflowServerPassword) {
 		Assert.notNull(commonApplicationProperties, "commonApplicationProperties must not be null");
 		Assert.notNull(metaDataResolver, "metaDataResolver must not be null");
 
 		this.commonApplicationProperties = commonApplicationProperties;
 		this.visibleProperties = new VisibleProperties(metaDataResolver);
 		this.dataflowServerUri = dataflowServerUri;
+		this.dataflowServerUsername = dataflowServerUsername;
+		this.dataflowServerPassword = dataflowServerPassword;
 	}
 
 
@@ -126,9 +131,9 @@ public class TaskAppDeploymentRequestCreator {
 		Map<String, String> deployerDeploymentProperties = DeploymentPropertiesUtils.qualifyDeployerProperties(props,
 				taskExecutionInformation.isComposed() ? "composed-task-runner" : registeredAppName);
 
-		if (StringUtils.hasText(this.dataflowServerUri) && taskExecutionInformation.isComposed()) {
-			TaskServiceUtils.updateDataFlowUriIfNeeded(this.dataflowServerUri, appDeploymentProperties,
-					commandLineArgs);
+		if (taskExecutionInformation.isComposed()) {
+			TaskServiceUtils.updateDataFlowIfNeeded(appDeploymentProperties, commandLineArgs,
+					this.dataflowServerUri, this.dataflowServerUsername, this.dataflowServerPassword);
 		}
 		if (taskExecutionInformation.isComposed()) {
 			appDeploymentProperties.put("platform-name", platformName);

@@ -47,3 +47,9 @@ spring:
       name: admin
       password: EDP#Wz4UVHTK
       roles: [VIEW, MANAGE, DESTROY, CREATE, MODIFY, DEPLOY, SCHEDULE]
+  cloud:
+    dataflow:
+      server:
+        username: ${spring.security.user.name}
+        password: ${spring.security.user.password}
+

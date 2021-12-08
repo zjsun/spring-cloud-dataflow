@@ -283,7 +283,7 @@ public class JobDependencies {
 			CommonApplicationProperties commonApplicationProperties,
 			ApplicationConfigurationMetadataResolver metadataResolver) {
 		return new TaskAppDeploymentRequestCreator(commonApplicationProperties,
-				metadataResolver, null);
+				metadataResolver, null, null, null);
 	}
 
 	@Bean

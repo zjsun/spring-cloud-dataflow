@@ -588,7 +588,7 @@ public class TestDependencies extends WebMvcConfigurationSupport {
 			CommonApplicationProperties commonApplicationProperties,
 			ApplicationConfigurationMetadataResolver metadataResolver) {
 		return new TaskAppDeploymentRequestCreator(commonApplicationProperties,
-				metadataResolver, null);
+				metadataResolver, null, null, null);
 	}
 
 	@Bean
@@ -660,7 +660,7 @@ public class TestDependencies extends WebMvcConfigurationSupport {
 				Collections.singletonList(taskPlatform), taskDefinitionRepository,
 				registry, resourceLoader,
 				taskConfigurationProperties, dataSourceProperties, null,
-				metaDataResolver, new SchedulerServiceProperties(), auditRecordService,
+				null, null, metaDataResolver, new SchedulerServiceProperties(), auditRecordService,
 				composedTaskRunnerConfigurationProperties);
 	}
 

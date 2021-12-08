@@ -44,6 +44,8 @@ import org.springframework.util.StringUtils;
  */
 public class TaskServiceUtils {
 	private static final String DATAFLOW_SERVER_URI_KEY = "dataflowServerUri";
+	private static final String DATAFLOW_SERVER_USERNAME_KEY = "dataflowServerUsername";
+	private static final String DATAFLOW_SERVER_PASSWORD_KEY = "dataflowServerPassword";
 
 	/**
 	 * Parses the task DSL to see if it is a composed task definition
@@ -227,6 +229,13 @@ public class TaskServiceUtils {
 				appDeploymentProperties.put(dataFlowServerUriKey, dataflowServerUri);
 			}
 		}
+	}
+
+	public static void updateDataFlowIfNeeded(Map<String, String> appDeploymentProperties, List<String> commandLineArgs
+			,String dataflowServerUri,String dataflowServerUsername, String dataflowServerPassword) {
+		updateDataFlowUriIfNeeded(DATAFLOW_SERVER_URI_KEY, dataflowServerUri, appDeploymentProperties, commandLineArgs);
+		updateDataFlowUriIfNeeded(DATAFLOW_SERVER_USERNAME_KEY, dataflowServerUsername, appDeploymentProperties, commandLineArgs);
+		updateDataFlowUriIfNeeded(DATAFLOW_SERVER_PASSWORD_KEY, dataflowServerPassword, appDeploymentProperties, commandLineArgs);
 	}
 
 	private static Map<String, String> extractPropertiesByPrefix(String type,
