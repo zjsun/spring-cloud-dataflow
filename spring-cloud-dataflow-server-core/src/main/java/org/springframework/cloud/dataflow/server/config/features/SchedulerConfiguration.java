@@ -80,7 +80,7 @@ public class SchedulerConfiguration {
 		return new DefaultSchedulerService(commonApplicationProperties,
 				taskPlatforms, taskDefinitionRepository, registry, resourceLoader,
 				taskConfigurationProperties, dataSourceProperties,
-				this.dataflowServerUri, null, null, metaDataResolver, schedulerServiceProperties, auditRecordService,
+				this.dataflowServerUri, this.dataflowServerUsername, this.dataflowServerPassword, metaDataResolver, schedulerServiceProperties, auditRecordService,
 				composedTaskRunnerConfigurationProperties);
 	}
 
